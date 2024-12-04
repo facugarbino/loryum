@@ -3,17 +3,13 @@
 import { createClient } from "@/utils/supabase/client";
 import { redirect } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { User } from "@supabase/supabase-js";
 import { Button } from "./ui/button";
-import { Github, GithubIcon, LogOut } from "lucide-react";
-import Link from "next/link";
+import { LogOut } from "lucide-react";
 import Image from "next/image";
+import { useUser } from "@/context/user-context";
 
-interface Props {
-  user: User | null;
-}
-
-export default function AuthButton({ user }: Props) {
+export default function AuthButton() {
+  const user = useUser();
   const { toast } = useToast();
 
   const handleSignIn = async () => {
