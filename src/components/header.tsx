@@ -1,5 +1,6 @@
-import { signOutAction } from "@/app/actions";
 import Link from "next/link";
+import Image from "next/image";
+import AuthButton from "./auth-button";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function Header() {
@@ -9,20 +10,17 @@ export default async function Header() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  return user ? (
-    <div className="flex items-center gap-4">
-      Hey, {user.email}!
-      <form action={signOutAction}>
-        <button>
-          Sign out
-        </button>
-      </form>
-    </div>
-  ) : (
-    <div className="flex gap-2">
-      <button>
-        Sign in with GitHub
-      </button>
-    </div>
+  return (
+    <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+      <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
+        <Link href={"/"}>
+          <div className="flex gap-5 items-center font-semibold">
+            <Image src={"/logo.png"} alt="Loryum logo" width={30} height={30} />
+            Loryum
+          </div>
+        </Link>
+        <AuthButton user={user} />
+      </div>
+    </nav>
   );
 }
