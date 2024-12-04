@@ -20,6 +20,7 @@ export const UserProvider = ({ children }: Props) => {
       setUser(data.user);
     };
 
+    loadUser();
     // Reload user on sign-in, sign-out, token-refreshed, etc.
     const subscription = supabase.auth.onAuthStateChange((event, session) => {
       loadUser();

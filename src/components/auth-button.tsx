@@ -1,25 +1,22 @@
 "use client";
 
 import { createClient } from "@/utils/supabase/client";
-import { redirect } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "./ui/button";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import { useUser } from "@/context/user-context";
+import { useState } from "react";
+import { signInWithGithub, signOut } from "@/utils/auth";
 
 export default function AuthButton() {
   const user = useUser();
   const { toast } = useToast();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSignIn = async () => {
-    const supabase = await createClient();
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "github",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
+    setLoading(true);
+    const { data, error } = await signInWithGithub();
 
     if (error) {
       console.error(error);
@@ -27,14 +24,10 @@ export default function AuthButton() {
         title: "An error occured",
       });
     }
-
-    return redirect("/");
   };
 
   const handleSignOut = async () => {
-    const supabase = await createClient();
-    await supabase.auth.signOut();
-    return redirect("/");
+    signOut();
   };
 
   const getAvatarUrl = (): string => {
@@ -61,7 +54,7 @@ export default function AuthButton() {
     </div>
   ) : (
     <div className="flex gap-2">
-      <Button onClick={handleSignIn}>
+      <Button onClick={handleSignIn} disabled={loading}>
         <Image src={"/github.svg"} width={20} height={20} alt={"GitHub logo"} />
         Sign in with GitHub
       </Button>
