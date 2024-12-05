@@ -7,19 +7,15 @@ import { getPosts } from "@/actions/posts";
 import PostComponent from "./post-component";
 
 export default function PostList({ firstPage }: { firstPage: ApiPage<Post> }) {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [posts, setPosts] = useState<Post[]>(firstPage.data);
+  const [hasMore, setHasMore] = useState<boolean>(firstPage.data.length < 10);
   const [page, setPage] = useState<number>(1);
-  const [token, setToken] = useState<string>();
-
-  useEffect(() => {
-    processPage(firstPage);
-  }, []);
+  const [token, setToken] = useState<string>(firstPage.token);
 
   useEffect(() => {
     //Page 1 is given from the props, only fetch from 2 in advance
     if (page > 1) {
-      getPosts(page, token);
+      getPosts(page, token).then(processPage);
     }
   }, [page]);
 
@@ -35,7 +31,7 @@ export default function PostList({ firstPage }: { firstPage: ApiPage<Post> }) {
   };
 
   return (
-    <div>
+    <div className="w-full max-w-3xl m-auto">
       <InfiniteScroll
         dataLength={posts.length}
         next={() => setPage(page + 1)}

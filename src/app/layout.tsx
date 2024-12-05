@@ -6,6 +6,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/context/user-context";
 import { getLoggedUser } from "@/actions/user";
+import { Suspense } from "react";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -37,8 +38,8 @@ export default async function RootLayout({
             <main className="min-h-screen flex flex-col items-center">
               <div className="flex-1 w-full flex flex-col gap-20 items-center">
                 <Header />
-                <div className="flex flex-col gap-20 max-w-5xl p-5">
-                  {children}
+                <div className="flex flex-col gap-20 max-w-5xl w-full">
+                  <Suspense fallback={<div>hola</div>}>{children}</Suspense>
                   <Toaster />
                 </div>
 
