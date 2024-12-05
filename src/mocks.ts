@@ -10,5 +10,5 @@ export const mockPost: Post = {
   date: new Date(),
   comments: 5,
   images: [],
-  text: "Lorem ipsum",
+  content: "Lorem ipsum",
 };

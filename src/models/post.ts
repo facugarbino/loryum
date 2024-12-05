@@ -8,5 +8,5 @@ export interface Post {
   date: Date;
   comments: number;
   images: string[];
-  text: string;
+  content: string;
 }

@@ -21,7 +21,7 @@ export default function PostComponent({ post }: { post: Post }) {
           <p className="text-sm text-foreground/50">{post.user.userName}</p>
         </div>
       </div>
-      {post.text}
+      {post.content}
     </div>
   );
 }
