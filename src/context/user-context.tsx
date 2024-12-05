@@ -1,6 +1,7 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
 import { Subscription, User } from "@supabase/supabase-js";
+import { useTheme } from "next-themes";
 import React, { createContext, useState, useContext, useEffect } from "react";
 
 const UserContext = createContext<User | null>(null);
@@ -12,6 +13,7 @@ interface Props {
 
 export const UserProvider = (props: Props) => {
   const [user, setUser] = useState<User | null>(props.user);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const supabase = createClient();
@@ -31,6 +33,12 @@ export const UserProvider = (props: Props) => {
       subscription?.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    if (user?.user_metadata?.theme) {
+      setTheme(user.user_metadata.theme);
+    }
+  }, [user]);
 
   return (
     <UserContext.Provider value={user}>{props.children}</UserContext.Provider>

@@ -8,3 +8,14 @@ export const getLoggedUser = async (): Promise<User | null> => {
 
   return (await supabase.auth.getUser()).data.user;
 };
+
+// Stores user preferred theme in the database
+export const updateTheme = async (theme: string) => {
+  const supabase = await createClient();
+
+  await supabase.auth.updateUser({
+    data: {
+      theme: theme,
+    },
+  });
+};

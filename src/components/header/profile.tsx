@@ -4,13 +4,19 @@ import { LogOut } from "lucide-react";
 import { signOut } from "@/utils/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useUser } from "@/context/user-context";
+import { Button } from "../ui/button";
+import { Label } from "../ui/label";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarTrigger,
+} from "../ui/menubar";
 
 export default function Profile() {
   const user = useUser()!;
-
-  const handleSignOut = async () => {
-    signOut();
-  };
 
   const getUserInitials = (): string => {
     const name = user.user_metadata.full_name;
@@ -26,19 +32,37 @@ export default function Profile() {
 
   return (
     <div className="flex items-center gap-8">
-      <div className="flex items-center gap-2">
-        <Avatar className="h-8 w-8">
-          <AvatarImage
-            src={user.user_metadata.avatar_url}
-            alt="Your GitHub avatar"
-          />
-          <AvatarFallback>{getUserInitials()}</AvatarFallback>
-        </Avatar>
-        {user.user_metadata.user_name}
-      </div>
-      <button title="Sign out">
-        <LogOut onClick={handleSignOut} />
-      </button>
+      <Menubar className="border-transparent hover:bg-transparent">
+        <MenubarMenu>
+          <MenubarTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <Avatar className="h-8 w-8">
+                <AvatarImage
+                  src={user.user_metadata.avatar_url}
+                  alt="Your GitHub avatar"
+                />
+                <AvatarFallback>{getUserInitials()}</AvatarFallback>
+              </Avatar>
+              {user.user_metadata.user_name}
+            </Button>
+          </MenubarTrigger>
+          <MenubarContent className="w-full">
+            <MenubarItem onSelect={() => {}}>Edit Profile</MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem
+              onSelect={signOut}
+              className="flex gap-2"
+              style={{ color: "#b23b3b" }}
+            >
+              <LogOut />
+              <Label className="cursor-pointer">Sign Out</Label>
+            </MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+      </Menubar>
     </div>
   );
 }

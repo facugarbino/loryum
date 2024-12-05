@@ -4,6 +4,7 @@ import Image from "next/image";
 import SignInButton from "./sign-in-button";
 import Profile from "./profile";
 import { useUser } from "@/context/user-context";
+import ThemeSelector from "./theme-selector";
 
 export default function Header() {
   const user = useUser();
@@ -17,7 +18,10 @@ export default function Header() {
             Loryum
           </div>
         </Link>
-        {user ? <Profile /> : <SignInButton />}
+        <div className="flex gap-2">
+          {user ? <Profile /> : <SignInButton />}
+          <ThemeSelector />
+        </div>
       </div>
     </nav>
   );
