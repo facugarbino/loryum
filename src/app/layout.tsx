@@ -1,10 +1,11 @@
-import Header from "@/components/header";
+import Header from "@/components/header/header";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/context/user-context";
+import { getLoggedUser } from "@/actions/user";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -16,11 +17,13 @@ export const metadata = {
   description: "Share your ideas and images",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await getLoggedUser();
+
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
@@ -30,7 +33,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <UserProvider>
+          <UserProvider user={user}>
             <main className="min-h-screen flex flex-col items-center">
               <div className="flex-1 w-full flex flex-col gap-20 items-center">
                 <Header />

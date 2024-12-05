@@ -4,6 +4,7 @@ import { Post } from "@/models/post";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ApiPage } from "@/models/api-page";
 import { getPosts } from "@/actions/posts";
+import PostComponent from "./post-component";
 
 export default function PostList({ firstPage }: { firstPage: ApiPage<Post> }) {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -42,9 +43,7 @@ export default function PostList({ firstPage }: { firstPage: ApiPage<Post> }) {
         loader={<h4>Loading...</h4>}
       >
         {posts.map((post) => (
-          <div key={post.id}>
-            <h3>{post.text}</h3>
-          </div>
+          <PostComponent key={post.id} post={post} />
         ))}
       </InfiniteScroll>
     </div>

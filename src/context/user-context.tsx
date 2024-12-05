@@ -7,11 +7,11 @@ const UserContext = createContext<User | null>(null);
 
 interface Props {
   children: React.ReactNode;
+  user: User | null;
 }
 
-export const UserProvider = ({ children }: Props) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [subscription, setSubscription] = useState<Subscription>();
+export const UserProvider = (props: Props) => {
+  const [user, setUser] = useState<User | null>(props.user);
 
   useEffect(() => {
     const supabase = createClient();
@@ -32,7 +32,9 @@ export const UserProvider = ({ children }: Props) => {
     };
   }, []);
 
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={user}>{props.children}</UserContext.Provider>
+  );
 };
 
 export const useUser = () => {
