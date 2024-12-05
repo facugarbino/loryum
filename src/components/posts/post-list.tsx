@@ -3,28 +3,34 @@ import { useEffect, useState } from "react";
 import { Post } from "@/models/post";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ApiPage } from "@/models/api-page";
+import { getPosts } from "@/actions/posts";
 
-export default function PostList() {
+export default function PostList({ firstPage }: { firstPage: ApiPage<Post> }) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
+  const [token, setToken] = useState<string>();
 
   useEffect(() => {
-    fetchPosts(page);
+    processPage(firstPage);
+  }, []);
+
+  useEffect(() => {
+    //Page 1 is given from the props, only fetch from 2 in advance
+    if (page > 1) {
+      getPosts(page, token);
+    }
   }, [page]);
 
-  const fetchPosts = async (page: number) => {
-    fetch(`/api/posts?page=${page}`)
-      .then((r) => r.json())
-      .then((r: ApiPage<Post>) => {
-        const newPosts = r.data;
+  const processPage = (apiPage: ApiPage<Post>) => {
+    const newPosts = apiPage.data;
 
-        if (posts.length === 0) {
-          setHasMore(false);
-        }
+    if (posts.length === 0) {
+      setHasMore(false);
+    }
 
-        setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-      });
+    setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+    setToken(apiPage.token);
   };
 
   return (
