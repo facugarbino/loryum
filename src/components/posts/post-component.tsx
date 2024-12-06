@@ -2,8 +2,7 @@
 import * as React from "react";
 
 import { Post } from "@/models/post";
-import { Avatar } from "../ui/avatar";
-import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { MessageSquare } from "lucide-react";
 import PostImages from "./post-images";
 import { calculateRelativeTime } from "@/utils/utils";
