@@ -18,7 +18,7 @@ export default function PostComponent({ post }: { post: Post }) {
             <p className="text-base">{post.user.name}</p>
             <p className="text-sm text-foreground/50">2d</p>
           </div>
-          <p className="text-sm text-foreground/50">{post.user.userName}</p>
+          <p className="text-sm text-foreground/50">{post.user.username}</p>
         </div>
       </div>
       {post.content}

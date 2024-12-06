@@ -1,12 +1,13 @@
 export interface Post {
   id: string;
   user: {
+    id: string;
     name: string;
-    userName: string;
+    username: string;
     avatarUrl: string;
   };
   date: Date;
   comments: number;
-  images: string[];
+  images: { url: string }[];
   content: string;
 }

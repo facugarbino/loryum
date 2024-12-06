@@ -4,21 +4,48 @@ import { mockPost } from "@/mocks";
 import { ApiPage } from "@/models/api-page";
 import { Post } from "@/models/post";
 import { createClient } from "@/utils/supabase/server";
-import { randomUUID } from "crypto";
 
-// Gets the posts from the database, if a token is provided it will paginate consider the post shown as first,
+const POST_PROJECTION = `
+      id,
+      content,
+      date:created_at,
+      images:post_images(
+        url:image_url
+      ),
+      user:users (
+        id,
+        name:full_name,
+        username,
+        avatarUrl:avatar_url
+      )
+    `;
+
+// Gets the posts from the database, until the date that has been provided
 // in case a new post is published while the user is scrolling.
 export const getPosts = async (
   page: number,
-  token?: string
+  until?: number
 ): Promise<ApiPage<Post>> => {
   const supabase = await createClient();
 
+  if (!until) {
+    until = Date.now();
+  }
+
+  const { data: posts, error } = await supabase
+    .from("posts")
+    .select(POST_PROJECTION)
+    .is("parent_id", null)
+    .lte("created_at", new Date(until).toISOString())
+    .order("created_at", { ascending: false });
+
+  console.log(posts);
+  console.log(error);
+
   return {
-    data: [mockPost],
+    data: posts as unknown as Post[],
     page: 1,
-    count: 10,
-    token: randomUUID(),
+    until: until,
   };
 };
 
@@ -30,14 +57,13 @@ export const getPost = async (id: string): Promise<Post> => {
 
 export const getCommentsForPost = async (
   postId: string,
-  token?: string
+  until?: number
 ): Promise<ApiPage<Post>> => {
   const supabase = await createClient();
 
   return {
     data: [mockPost],
     page: 1,
-    count: 5,
-    token: randomUUID(),
+    until: Date.now(),
   };
 };
