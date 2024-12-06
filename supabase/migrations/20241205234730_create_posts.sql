@@ -1,7 +1,7 @@
 create table posts (
   id uuid primary key default uuid_generate_v4(),
   content text not null,
-  user_id uuid not null references auth.users(id) on delete cascade,
+  user_id uuid not null references users(id) on delete cascade,
   parent_id uuid null references posts(id) on delete cascade, -- if it's a comment, refers to the main post
   created_at timestamp with time zone default current_timestamp
 );
