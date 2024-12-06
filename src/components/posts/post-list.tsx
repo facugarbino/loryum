@@ -71,15 +71,14 @@ export default function PostList({
             </div>
           }
         >
-          {posts.map((post) =>
-            postId ? (
-              <PostComponent key={post.id} post={post} showComments />
-            ) : (
-              <Link key={post.id} href={`posts/${post.id}`}>
-                <PostComponent post={post} showComments />
-              </Link>
-            )
-          )}
+          {posts.map((post) => (
+            <PostComponent
+              key={post.id}
+              post={post}
+              showComments
+              redirectToPost={!postId}
+            />
+          ))}
           {showNoMore && !postId && (
             <div className="flex flex-col items-center p-4">
               You've reached to the end.
