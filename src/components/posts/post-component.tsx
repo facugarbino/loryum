@@ -4,6 +4,7 @@ import * as React from "react";
 import { Post } from "@/models/post";
 import { Avatar } from "../ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { MessageSquare } from "lucide-react";
 
 export default function PostComponent({ post }: { post: Post }) {
   return (
@@ -22,6 +23,10 @@ export default function PostComponent({ post }: { post: Post }) {
         </div>
       </div>
       {post.content}
+      <div className="flex items-center gap-2">
+        <MessageSquare className="h-4 w-4" />
+        <p className="text-xs">{post.comments}</p>
+      </div>
     </div>
   );
 }

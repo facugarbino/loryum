@@ -17,8 +17,18 @@ const POST_PROJECTION = `
         name:full_name,
         username,
         avatarUrl:avatar_url
+      ),
+      comments:posts!parent_id(
+        count()
       )
     `;
+
+const calculateRange = (page: number) => {
+  const from = (page - 1) * 10;
+  const to = from + 10;
+
+  return { from, to };
+};
 
 // Gets the posts from the database, until the date that has been provided
 // in case a new post is published while the user is scrolling.
@@ -31,20 +41,21 @@ export const getPosts = async (
   if (!until) {
     until = Date.now();
   }
+  const { from, to } = calculateRange(page);
 
   const { data: posts, error } = await supabase
     .from("posts")
     .select(POST_PROJECTION)
     .is("parent_id", null)
     .lte("created_at", new Date(until).toISOString())
-    .order("created_at", { ascending: false });
-
-  console.log(posts);
-  console.log(error);
+    .order("created_at", { ascending: false })
+    .range(from, to);
 
   return {
-    data: posts as unknown as Post[],
-    page: 1,
+    data: posts?.map((p) => ({
+      ...p,
+      comments: p.comments[0].count,
+    })) as unknown as Post[],
     until: until,
   };
 };
@@ -63,7 +74,6 @@ export const getCommentsForPost = async (
 
   return {
     data: [mockPost],
-    page: 1,
     until: Date.now(),
   };
 };

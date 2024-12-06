@@ -10,12 +10,12 @@ export default function PostList({ firstPage }: { firstPage: ApiPage<Post> }) {
   const [posts, setPosts] = useState<Post[]>(firstPage.data);
   const [hasMore, setHasMore] = useState<boolean>(firstPage.data.length < 10);
   const [page, setPage] = useState<number>(1);
-  const [token, setToken] = useState<string>(firstPage.until);
+  const [until, setUntil] = useState<number>(firstPage.until);
 
   useEffect(() => {
     //Page 1 is given from the props, only fetch from 2 in advance
     if (page > 1) {
-      getPosts(page, token).then(processPage);
+      getPosts(page, until).then(processPage);
     }
   }, [page]);
 
@@ -27,7 +27,7 @@ export default function PostList({ firstPage }: { firstPage: ApiPage<Post> }) {
     }
 
     setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-    setToken(apiPage.until);
+    setUntil(apiPage.until);
   };
 
   return (
