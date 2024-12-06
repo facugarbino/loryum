@@ -2,15 +2,15 @@
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
-import { Accessibility, Image, ImageUp, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
-import Dropzone from "shadcn-dropzone";
+import { Trash } from "lucide-react";
+import { useState } from "react";
 import { ImageUploader } from "./image-uploader";
 import { submitPost } from "@/actions/posts";
-import { toast, useToast } from "@/hooks/use-toast";
-import { setFlagsFromString } from "v8";
+import { useToast } from "@/hooks/use-toast";
 
 const IMAGES_LIMIT = 4;
+const TEXT_LIMIT = 500;
+const IMAGE_SIZE_LIMIT = 1024 * 1024;
 
 export default function PostCreator() {
   const [value, setValue] = useState<string>("");
@@ -19,6 +19,12 @@ export default function PostCreator() {
 
   const handleNewFiles = (files: File[]) => {
     files = files.slice(0, IMAGES_LIMIT - images.length);
+    if (files.some((f) => f.size > IMAGE_SIZE_LIMIT)) {
+      files = files.filter((f) => f.size < IMAGE_SIZE_LIMIT);
+      toast({
+        title: "Files can't exceed 1MB.",
+      });
+    }
     setImages((images) => [...images, ...files]);
   };
 
@@ -27,6 +33,10 @@ export default function PostCreator() {
   };
 
   const handlePost = async () => {
+    if (!value.trim()) {
+      return;
+    }
+
     await submitPost(value.trim(), images);
     toast({
       title: "Post published",
@@ -42,8 +52,12 @@ export default function PostCreator() {
           placeholder="Post your thoughts..."
           className="resize-none"
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => setValue(e.target.value.slice(0, TEXT_LIMIT))}
+          id={"post-input"}
         />
+        <Label className="text-xs" htmlFor="post-input">
+          {value.length} / {TEXT_LIMIT} characters
+        </Label>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <ImageUploader
@@ -68,7 +82,9 @@ export default function PostCreator() {
               ))}
             </div>
           </div>
-          <Button onClick={handlePost}>Post</Button>
+          <Button disabled={!value.trim()} onClick={handlePost}>
+            Post
+          </Button>
         </div>
       </div>
     </div>

@@ -56,18 +56,31 @@ export const getPosts = async (
     .range(from, to);
 
   return {
+    //@ts-ignore
     data: posts?.map((p) => ({
       ...p,
+      //@ts-ignore
       comments: p.comments[0].count,
-    })) as unknown as Post[],
+    })),
     until: until,
   };
 };
 
-export const getPost = async (id: string): Promise<Post> => {
+export const getPost = async (id: string): Promise<Post | null> => {
   const supabase = await createClient();
 
-  return { ...mockPost, id: id };
+  const { data, error } = await supabase
+    .from("posts")
+    .select(POST_PROJECTION)
+    .eq("id", id)
+    .single();
+
+  if (data == null) {
+    return null;
+  }
+
+  //@ts-ignore
+  return { ...data, comments: data.comments[0].count };
 };
 
 export const getCommentsForPost = async (
@@ -83,6 +96,11 @@ export const getCommentsForPost = async (
 };
 
 export const submitPost = async (content: string, images: File[]) => {
+  content = content.trim();
+  if (!content) {
+    return;
+  }
+
   const supabase = await createClient();
   const user = await getLoggedUser();
 
@@ -109,7 +127,7 @@ export const submitPost = async (content: string, images: File[]) => {
     .from("posts")
     .insert({
       user_id: user?.id,
-      content: content.trim(),
+      content: content,
     })
     .select()
     .single();
