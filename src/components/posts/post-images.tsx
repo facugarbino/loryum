@@ -1,6 +1,10 @@
 import * as React from "react";
 
 export default function PostImages({ images }: { images: string[] }) {
+  const prefixUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL +
+    "/storage/v1/object/public/post_images/";
+
   if (images.length === 0) {
     return;
   }
@@ -24,7 +28,7 @@ export default function PostImages({ images }: { images: string[] }) {
           key={index}
           className="relative overflow-hidden rounded-lg shadow-md bg-white max-w-md	"
         >
-          <img src={src} className="object-cover h-full w-full" />
+          <img src={prefixUrl + src} className="object-cover h-full w-full" />
         </div>
       ))}
     </div>

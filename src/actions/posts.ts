@@ -4,6 +4,8 @@ import { mockPost } from "@/mocks";
 import { ApiPage } from "@/models/api-page";
 import { Post } from "@/models/post";
 import { createClient } from "@/utils/supabase/server";
+import { getLoggedUser } from "./user";
+import { randomUUID } from "crypto";
 
 const PAGE_SIZE = 5;
 
@@ -78,4 +80,44 @@ export const getCommentsForPost = async (
     data: [mockPost],
     until: Date.now(),
   };
+};
+
+export const submitPost = async (content: string, images: File[]) => {
+  const supabase = await createClient();
+  const user = await getLoggedUser();
+
+  let imagesUrls: string[] = [];
+  if (images) {
+    // Upload all images to buckets and return urls
+    imagesUrls = (
+      await Promise.all(
+        images.slice(0, 4).map(async (i) => {
+          const { data, error } = await supabase.storage
+            .from("post_images")
+            .upload(randomUUID() + "." + i.name.split(".").at(-1), i, {
+              cacheControl: "3600",
+              upsert: false,
+            });
+
+          return data?.path;
+        })
+      )
+    ).filter((path) => path !== undefined);
+  }
+
+  const { data } = await supabase
+    .from("posts")
+    .insert({
+      user_id: user?.id,
+      content: content.trim(),
+    })
+    .select()
+    .single();
+
+  const { error } = await supabase.from("post_images").insert(
+    imagesUrls.map((url) => ({
+      post_id: data.id,
+      image_url: url,
+    }))
+  );
 };
