@@ -11,18 +11,20 @@ export default function PostImages({ images }: { images: string[] }) {
   // Support a max of 4 images
   images = images.slice(0, 4);
 
-  let gridColumns = 1;
-  switch (images.length) {
-    case 2:
-    case 4:
-      gridColumns = 2;
-      break;
-    case 3:
-      gridColumns = 3;
-  }
+  const calculateGridColumn = () => {
+    switch (images.length) {
+      case 1:
+        return "grid-cols-1";
+      case 2:
+      case 4:
+        return "grid-cols-2";
+      case 3:
+        return "grid-cols-3";
+    }
+  };
 
   return (
-    <div className={`grid gap-4 grid-cols-${gridColumns}`}>
+    <div className={`grid gap-4 ${calculateGridColumn()}`}>
       {images.map((src, index) => (
         <div
           key={index}
