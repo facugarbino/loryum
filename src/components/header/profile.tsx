@@ -14,6 +14,7 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from "../ui/menubar";
+import Link from "next/link";
 
 export default function Profile() {
   const user = useUser()!;
@@ -50,11 +51,13 @@ export default function Profile() {
             </Button>
           </MenubarTrigger>
           <MenubarContent className="w-full">
-            <MenubarItem onSelect={() => {}}>Edit Profile</MenubarItem>
+            <Link href={"/profile"}>
+              <MenubarItem className="cursor-pointer">Profile</MenubarItem>
+            </Link>
             <MenubarSeparator />
             <MenubarItem
               onSelect={signOut}
-              className="flex gap-2"
+              className="flex gap-2 cursor-pointer"
               style={{ color: "#b23b3b" }}
             >
               <LogOut />
