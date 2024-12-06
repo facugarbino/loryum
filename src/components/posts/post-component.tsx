@@ -6,6 +6,7 @@ import { Avatar } from "../ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { MessageSquare } from "lucide-react";
 import PostImages from "./post-images";
+import { calculateRelativeTime } from "@/utils/utils";
 
 export default function PostComponent({ post }: { post: Post }) {
   return (
@@ -18,7 +19,9 @@ export default function PostComponent({ post }: { post: Post }) {
         <div>
           <div className="flex items-center gap-4">
             <p className="text-base">{post.user.name}</p>
-            <p className="text-sm text-foreground/50">2d</p>
+            <p className="text-sm text-foreground/50">
+              {calculateRelativeTime(post.date)}
+            </p>
           </div>
           <p className="text-sm text-foreground/50">{post.user.username}</p>
         </div>

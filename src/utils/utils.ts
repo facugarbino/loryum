@@ -14,3 +14,7 @@ export function encodedRedirect(
 ) {
   return redirect(`${path}?${type}=${encodeURIComponent(message)}`);
 }
+
+export function calculateRelativeTime(isoDate: string): string {
+  return "2d";
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import { redirect } from "next/navigation";
 import { createClient } from "./supabase/client";
 
 const supabase = createClient();
@@ -15,4 +16,5 @@ export const signInWithGithub = async () => {
 
 export const signOut = async () => {
   await supabase.auth.signOut();
+  redirect("/");
 };

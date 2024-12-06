@@ -1,6 +1,5 @@
 "use server";
 
-import { mockPost } from "@/mocks";
 import { ApiPage } from "@/models/api-page";
 import { Post } from "@/models/post";
 import { createClient } from "@/utils/supabase/server";
@@ -34,11 +33,28 @@ const calculateRange = (page: number) => {
   return { from, to };
 };
 
-// Gets the posts from the database, until the date that has been provided
-// in case a new post is published while the user is scrolling.
 export const getPosts = async (
   page: number,
   until?: number
+): Promise<ApiPage<Post>> => {
+  return getPostsFromSupabase(page, until, null);
+};
+
+export const getComments = async (
+  postId: string,
+  page: number,
+  until?: number
+): Promise<ApiPage<Post>> => {
+  return getPostsFromSupabase(page, until, postId);
+};
+
+// Gets the posts from the database, until the date that has been provided
+// in case a new post is published while the user is scrolling.
+// If parentId is provided, it return the comments related to the main post
+const getPostsFromSupabase = async (
+  page: number,
+  until?: number,
+  parentId: string | null = null
 ): Promise<ApiPage<Post>> => {
   const supabase = await createClient();
 
@@ -50,7 +66,7 @@ export const getPosts = async (
   const { data: posts, error } = await supabase
     .from("posts")
     .select(POST_PROJECTION)
-    .is("parent_id", null)
+    .is("parent_id", parentId)
     .lte("created_at", new Date(until).toISOString())
     .order("created_at", { ascending: false })
     .range(from, to);
@@ -81,18 +97,6 @@ export const getPost = async (id: string): Promise<Post | null> => {
 
   //@ts-ignore
   return { ...data, comments: data.comments[0].count };
-};
-
-export const getCommentsForPost = async (
-  postId: string,
-  until?: number
-): Promise<ApiPage<Post>> => {
-  const supabase = await createClient();
-
-  return {
-    data: [mockPost],
-    until: Date.now(),
-  };
 };
 
 export const submitPost = async (content: string, images: File[]) => {

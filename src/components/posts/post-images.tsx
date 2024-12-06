@@ -26,7 +26,7 @@ export default function PostImages({ images }: { images: string[] }) {
       {images.map((src, index) => (
         <div
           key={index}
-          className="relative overflow-hidden rounded-lg shadow-md bg-white max-w-md	"
+          className="relative overflow-hidden rounded-lg shadow-md bg-white max-w-md"
         >
           <img src={prefixUrl + src} className="object-cover h-full w-full" />
         </div>

@@ -6,7 +6,7 @@ export interface Post {
     username: string;
     avatarUrl: string;
   };
-  date: Date;
+  date: string;
   comments: number;
   images: { url: string }[];
   content: string;
