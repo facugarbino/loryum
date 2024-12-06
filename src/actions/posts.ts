@@ -71,7 +71,10 @@ const getPostsFromSupabase = async (
     .order("created_at", { ascending: false })
     .range(from, to);
 
-  console.log(posts);
+  if (error) {
+    console.error(error);
+  }
+
   return {
     //@ts-ignore
     data: posts?.map((p) => ({
@@ -91,6 +94,10 @@ export const getPost = async (id: string): Promise<Post | null> => {
     .select(POST_PROJECTION)
     .eq("id", id)
     .single();
+
+  if (error) {
+    console.error(error);
+  }
 
   if (data == null) {
     return null;
@@ -121,6 +128,9 @@ export const submitPost = async (content: string, images: File[]) => {
               cacheControl: "3600",
               upsert: false,
             });
+          if (error) {
+            console.error(error);
+          }
 
           return data?.path;
         })
@@ -128,7 +138,7 @@ export const submitPost = async (content: string, images: File[]) => {
     ).filter((path) => path !== undefined);
   }
 
-  const { data } = await supabase
+  let { data, error } = await supabase
     .from("posts")
     .insert({
       user_id: user?.id,
@@ -137,10 +147,20 @@ export const submitPost = async (content: string, images: File[]) => {
     .select()
     .single();
 
-  const { error } = await supabase.from("post_images").insert(
+  if (error) {
+    console.error(error);
+  }
+
+  const post_images_response = await supabase.from("post_images").insert(
     imagesUrls.map((url) => ({
       post_id: data.id,
       image_url: url,
     }))
   );
+
+  error = post_images_response.error;
+
+  if (error) {
+    console.error(error);
+  }
 };
