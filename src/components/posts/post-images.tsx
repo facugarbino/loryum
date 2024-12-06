@@ -1,6 +1,12 @@
 import * as React from "react";
 
-export default function PostImages({ images }: { images: string[] }) {
+export default function PostImages({
+  images,
+  fullPage,
+}: {
+  images: string[];
+  fullPage?: boolean;
+}) {
   const prefixUrl =
     process.env.NEXT_PUBLIC_SUPABASE_URL +
     "/storage/v1/object/public/post_images/";
@@ -16,8 +22,9 @@ export default function PostImages({ images }: { images: string[] }) {
       case 1:
         return "grid-cols-1";
       case 2:
-      case 4:
         return "grid-cols-2";
+      case 4:
+        return fullPage ? "grid-cols-4" : "grid-cols-2";
       case 3:
         return "grid-cols-3";
     }

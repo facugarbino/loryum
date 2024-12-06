@@ -63,13 +63,19 @@ const getPostsFromSupabase = async (
   }
   const { from, to } = calculateRange(page);
 
-  const { data: posts, error } = await supabase
+  const query = supabase
     .from("posts")
     .select(POST_PROJECTION)
-    .is("parent_id", parentId)
     .lte("created_at", new Date(until).toISOString())
     .order("created_at", { ascending: false })
     .range(from, to);
+
+  if (parentId === null) {
+    query.is("parent_id", parentId);
+  } else {
+    query.eq("parent_id", parentId);
+  }
+  const { data: posts, error } = await query;
 
   if (error) {
     console.error(error);
@@ -107,7 +113,11 @@ export const getPost = async (id: string): Promise<Post | null> => {
   return { ...data, comments: data.comments[0].count };
 };
 
-export const submitPost = async (content: string, images: File[]) => {
+export const submitPost = async (
+  content: string,
+  images: File[],
+  postId?: string
+) => {
   content = content.trim();
   if (!content) {
     return;
@@ -143,6 +153,7 @@ export const submitPost = async (content: string, images: File[]) => {
     .insert({
       user_id: user?.id,
       content: content,
+      postId: postId || null,
     })
     .select()
     .single();

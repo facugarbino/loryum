@@ -1,19 +1,4 @@
-"use client";
-import * as React from "react";
-
-import { Post } from "@/models/post";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { MessageSquare } from "lucide-react";
-import PostImages from "./post-images";
-import { calculateRelativeTime } from "@/utils/utils";
-
-export default function PostComponent({
-  post,
-  fullPage,
-}: {
-  post: Post;
-  fullPage?: boolean;
-}) {
+export default function PostCommentList() {
   return (
     <div className="flex flex-col gap-6 border p-5">
       <div className="flex items-center space-x-4">

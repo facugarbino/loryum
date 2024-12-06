@@ -10,8 +10,12 @@ export default async function Index() {
   return (
     <>
       <main className="w-full flex-1 flex flex-col gap-6 px-4 items-center">
-        {user ? <PostCreator /> : <p>Log in to post</p>}
-        <PostList firstPage={posts} />
+        {user ? (
+          <PostCreator placeholder={"Post your thoughts..."} />
+        ) : (
+          <p>Log in to post</p>
+        )}
+        <PostList firstPage={posts} noPostMessage={"Be the first to post"} />
       </main>
     </>
   );

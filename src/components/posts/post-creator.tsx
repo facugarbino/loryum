@@ -12,7 +12,13 @@ const IMAGES_LIMIT = 4;
 const TEXT_LIMIT = 500;
 const IMAGE_SIZE_LIMIT = 1024 * 1024;
 
-export default function PostCreator() {
+export default function PostCreator({
+  placeholder,
+  postId,
+}: {
+  placeholder: string;
+  postId?: string;
+}) {
   const [value, setValue] = useState<string>("");
   const [images, setImages] = useState<File[]>([]);
   const { toast } = useToast();
@@ -37,7 +43,7 @@ export default function PostCreator() {
       return;
     }
 
-    await submitPost(value.trim(), images);
+    await submitPost(value.trim(), images, postId);
     toast({
       title: "Post published",
     });
@@ -46,12 +52,11 @@ export default function PostCreator() {
   };
 
   return (
-    <div className="w-full max-w-3xl m-auto">
+    <div className="w-full max-w-3xl m-auto p-4 border">
       <div className="grid w-full gap-2">
         <Textarea
-          placeholder="Post your thoughts..."
+          placeholder={placeholder}
           className="resize-none"
-          value={value}
           onChange={(e) => setValue(e.target.value.slice(0, TEXT_LIMIT))}
           id={"post-input"}
         />

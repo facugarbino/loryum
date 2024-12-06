@@ -6,8 +6,15 @@ import { ApiPage } from "@/models/api-page";
 import { getPosts } from "@/actions/posts";
 import PostComponent from "./post-component";
 import { Spinner } from "../ui/spinner";
+import Link from "next/link";
 
-export default function PostList({ firstPage }: { firstPage: ApiPage<Post> }) {
+export default function PostList({
+  firstPage,
+  noPostMessage,
+}: {
+  firstPage: ApiPage<Post>;
+  noPostMessage: string;
+}) {
   const [posts, setPosts] = useState<Post[]>(firstPage.data);
   const [hasMore, setHasMore] = useState<boolean>(firstPage.data.length < 10);
   const [page, setPage] = useState<number>(1);
@@ -36,26 +43,32 @@ export default function PostList({ firstPage }: { firstPage: ApiPage<Post> }) {
   };
 
   return (
-    <div className="w-full max-w-3xl m-auto">
-      <InfiniteScroll
-        dataLength={posts.length}
-        next={() => setPage(page + 1)}
-        hasMore={hasMore}
-        loader={
-          <div className="flex flex-col items-center p-4">
-            <Spinner />
-          </div>
-        }
-      >
-        {posts.map((post) => (
-          <PostComponent key={post.id} post={post} />
-        ))}
-        {showNoMore && (
-          <div className="flex flex-col items-center p-4">
-            You've reached to the end.
-          </div>
-        )}
-      </InfiniteScroll>
+    <div className="flex justify-center w-full max-w-3xl m-auto">
+      {posts.length === 0 ? (
+        <p>{noPostMessage}</p>
+      ) : (
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={() => setPage(page + 1)}
+          hasMore={hasMore}
+          loader={
+            <div className="flex flex-col items-center p-4">
+              <Spinner />
+            </div>
+          }
+        >
+          {posts.map((post) => (
+            <Link key={post.id} href={`posts/${post.id}`}>
+              <PostComponent post={post} />
+            </Link>
+          ))}
+          {showNoMore && (
+            <div className="flex flex-col items-center p-4">
+              You've reached to the end.
+            </div>
+          )}
+        </InfiniteScroll>
+      )}
     </div>
   );
 }
