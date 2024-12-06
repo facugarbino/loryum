@@ -10,9 +10,11 @@ import { calculateRelativeTime } from "@/utils/utils";
 export default function PostComponent({
   post,
   fullPage,
+  showComments,
 }: {
   post: Post;
   fullPage?: boolean;
+  showComments?: boolean;
 }) {
   return (
     <div className="flex flex-col gap-6 border p-5">
@@ -33,10 +35,12 @@ export default function PostComponent({
       </div>
       {post.content}
       <PostImages images={post.images.map((i) => i.url)} fullPage={fullPage} />
-      <div className="flex items-center gap-2">
-        <MessageSquare className="h-4 w-4" />
-        <p className="text-xs">{post.comments}</p>
-      </div>
+      {showComments && (
+        <div className="flex items-center gap-2">
+          <MessageSquare className="h-4 w-4" />
+          <p className="text-xs">{post.comments}</p>
+        </div>
+      )}
     </div>
   );
 }

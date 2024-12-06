@@ -37,7 +37,15 @@ export const getPosts = async (
   page: number,
   until?: number
 ): Promise<ApiPage<Post>> => {
-  return getPostsFromSupabase(page, until, null);
+  return getPostsFromSupabase(page, until);
+};
+
+export const getPostsByUser = async (
+  page: number,
+  userId: string,
+  until?: number
+): Promise<ApiPage<Post>> => {
+  return getPostsFromSupabase(page, until, null, userId);
 };
 
 export const getComments = async (
@@ -54,7 +62,8 @@ export const getComments = async (
 const getPostsFromSupabase = async (
   page: number,
   until?: number,
-  parentId: string | null = null
+  parentId: string | null = null,
+  userId: string | null = null
 ): Promise<ApiPage<Post>> => {
   const supabase = await createClient();
 
@@ -75,6 +84,10 @@ const getPostsFromSupabase = async (
   } else {
     query.eq("parent_id", parentId);
   }
+  if (userId !== null) {
+    query.eq("user_id", userId);
+  }
+
   const { data: posts, error } = await query;
 
   if (error) {

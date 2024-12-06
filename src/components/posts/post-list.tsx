@@ -3,17 +3,21 @@ import { useEffect, useState } from "react";
 import { Post } from "@/models/post";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ApiPage } from "@/models/api-page";
-import { getPosts } from "@/actions/posts";
 import PostComponent from "./post-component";
 import { Spinner } from "../ui/spinner";
 import Link from "next/link";
+import { getComments, getPosts, getPostsByUser } from "@/actions/posts";
 
 export default function PostList({
   firstPage,
   noPostMessage,
+  userId,
+  postId,
 }: {
   firstPage: ApiPage<Post>;
   noPostMessage: string;
+  userId?: string;
+  postId?: string;
 }) {
   const [posts, setPosts] = useState<Post[]>(firstPage.data);
   const [hasMore, setHasMore] = useState<boolean>(firstPage.data.length < 10);
@@ -21,10 +25,19 @@ export default function PostList({
   const [until, setUntil] = useState<number>(firstPage.until);
   const [showNoMore, setShowNoMore] = useState<boolean>(false);
 
+  const getMorePosts = async () => {
+    if (userId) {
+      return getPostsByUser(page, userId, until);
+    } else if (postId) {
+      return getComments(postId, page, until);
+    }
+    return getPosts(page, until);
+  };
+
   useEffect(() => {
     //Page 1 is given from the props, only fetch from 2 in advance
     if (page > 1) {
-      getPosts(page, until).then(processPage);
+      getMorePosts().then(processPage);
     }
   }, [page]);
 
@@ -48,6 +61,7 @@ export default function PostList({
         <p>{noPostMessage}</p>
       ) : (
         <InfiniteScroll
+          className="w-full"
           dataLength={posts.length}
           next={() => setPage(page + 1)}
           hasMore={hasMore}
@@ -57,12 +71,16 @@ export default function PostList({
             </div>
           }
         >
-          {posts.map((post) => (
-            <Link key={post.id} href={`posts/${post.id}`}>
-              <PostComponent post={post} />
-            </Link>
-          ))}
-          {showNoMore && (
+          {posts.map((post) =>
+            postId ? (
+              <PostComponent key={post.id} post={post} showComments />
+            ) : (
+              <Link key={post.id} href={`posts/${post.id}`}>
+                <PostComponent post={post} showComments />
+              </Link>
+            )
+          )}
+          {showNoMore && !postId && (
             <div className="flex flex-col items-center p-4">
               You've reached to the end.
             </div>
