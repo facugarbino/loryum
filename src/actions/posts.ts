@@ -5,6 +5,8 @@ import { ApiPage } from "@/models/api-page";
 import { Post } from "@/models/post";
 import { createClient } from "@/utils/supabase/server";
 
+const PAGE_SIZE = 5;
+
 const POST_PROJECTION = `
       id,
       content,
@@ -24,8 +26,8 @@ const POST_PROJECTION = `
     `;
 
 const calculateRange = (page: number) => {
-  const from = (page - 1) * 10;
-  const to = from + 10;
+  const from = (page - 1) * PAGE_SIZE;
+  const to = from + PAGE_SIZE - 1;
 
   return { from, to };
 };
