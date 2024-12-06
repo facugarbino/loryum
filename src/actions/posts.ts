@@ -71,6 +71,7 @@ const getPostsFromSupabase = async (
     .order("created_at", { ascending: false })
     .range(from, to);
 
+  console.log(posts);
   return {
     //@ts-ignore
     data: posts?.map((p) => ({
