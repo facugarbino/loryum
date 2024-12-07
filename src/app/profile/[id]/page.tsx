@@ -49,7 +49,7 @@ export default async function UserProfile({
             <div>{name}</div>
           </div>
           <p className="mx-8 text-sm text-foreground/50">
-            {user.postsAmount} posts
+            {user.postsAmount} post{user.postsAmount > 1 ? "s" : ""}
           </p>
         </div>
         <PostList userId={id} firstPage={posts} noPostMessage="No posts" />
