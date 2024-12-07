@@ -6,6 +6,7 @@ import { ApiPage } from "@/models/api-page";
 import PostComponent from "./post-component";
 import { Spinner } from "../ui/spinner";
 import { getComments, getPosts, getPostsByUser } from "@/actions/posts";
+import { usePosts } from "@/context/posts-context";
 
 export default function PostList({
   firstPage,
@@ -18,7 +19,7 @@ export default function PostList({
   userId?: string;
   postId?: string;
 }) {
-  const [posts, setPosts] = useState<Post[]>(firstPage.data);
+  const { posts, setPosts } = usePosts();
   const [hasMore, setHasMore] = useState<boolean>(firstPage.data.length < 10);
   const [page, setPage] = useState<number>(1);
   const [until, setUntil] = useState<number>(firstPage.until);

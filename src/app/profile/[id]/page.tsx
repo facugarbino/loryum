@@ -3,7 +3,7 @@ import { getPostsByUser } from "@/actions/posts";
 import PostCreator from "@/components/posts/post-creator";
 import { getLoggedUser, getUserById } from "@/actions/user";
 import { redirect } from "next/navigation";
-import Error from "next/error";
+import { PostsProvider } from "@/context/posts-context";
 
 export default async function UserProfile({
   params,
@@ -32,7 +32,6 @@ export default async function UserProfile({
     redirect("/");
   }
 
-  console.log(user);
   if (!user) {
     return <p>Error 404</p>;
   }
@@ -40,7 +39,7 @@ export default async function UserProfile({
   const posts = await getPostsByUser(1, id);
 
   return (
-    <>
+    <PostsProvider posts={posts.data}>
       <main className="w-full flex-1 flex flex-col gap-6 px-4 items-center">
         {self ? (
           <PostCreator placeholder="Post your thoughts..." />
@@ -49,6 +48,6 @@ export default async function UserProfile({
         )}
         <PostList userId={id} firstPage={posts} noPostMessage="No posts" />
       </main>
-    </>
+    </PostsProvider>
   );
 }

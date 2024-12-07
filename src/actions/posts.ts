@@ -132,10 +132,10 @@ export const submitPost = async (
   content: string,
   images: File[],
   postId?: string
-) => {
+): Promise<Post | undefined> => {
   content = content.trim();
   if (!content) {
-    return;
+    return undefined;
   }
 
   const supabase = await createClient();
@@ -170,7 +170,7 @@ export const submitPost = async (
       content: content,
       parent_id: postId || null,
     })
-    .select()
+    .select(POST_PROJECTION)
     .single();
 
   if (error) {
@@ -179,6 +179,7 @@ export const submitPost = async (
 
   const post_images_response = await supabase.from("post_images").insert(
     imagesUrls.map((url) => ({
+      //@ts-ignore
       post_id: data.id,
       image_url: url,
     }))
@@ -189,4 +190,14 @@ export const submitPost = async (
   if (error) {
     console.error(error);
   }
+
+  //@ts-ignore
+  return {
+    ...data,
+    //@ts-ignore
+    comments: data.comments[0].count,
+    //@ts-ignore
+    date: calculateRelativeTime(data.date),
+    images: imagesUrls.map((url) => ({ url })),
+  };
 };

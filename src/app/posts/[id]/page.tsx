@@ -2,8 +2,8 @@ import { getComments, getPost, getPosts } from "@/actions/posts";
 import PostComponent from "@/components/posts/post-component";
 import PostCreator from "@/components/posts/post-creator";
 import PostList from "@/components/posts/post-list";
-import { Spinner } from "@/components/ui/spinner";
-import { ArrowLeft, StepBack } from "lucide-react";
+import { PostsProvider } from "@/context/posts-context";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export default async function PostView({
@@ -19,22 +19,22 @@ export default async function PostView({
     return <p>Error 404</p>;
   }
 
-  return !post ? (
-    <Spinner />
-  ) : (
-    <main className="space-y-4">
-      <Link className="flex gap-2 px-4" href={"/"}>
-        <ArrowLeft /> Back
-      </Link>
-      <PostComponent post={post} fullPage={true} />
-      <div className="w-full flex-1 flex flex-col gap-6 px-4 items-center">
-        <PostCreator placeholder={"Add your comment..."} postId={id} />
-        <PostList
-          postId={id}
-          firstPage={comments}
-          noPostMessage="No comments"
-        />
-      </div>
-    </main>
+  return (
+    <PostsProvider posts={comments.data}>
+      <main className="space-y-4">
+        <Link className="flex gap-2 px-4" href={"/"}>
+          <ArrowLeft /> Back
+        </Link>
+        <PostComponent post={post} fullPage={true} />
+        <div className="w-full flex-1 flex flex-col gap-6 px-4 items-center">
+          <PostCreator placeholder={"Add your comment..."} postId={id} />
+          <PostList
+            postId={id}
+            firstPage={comments}
+            noPostMessage="No comments"
+          />
+        </div>
+      </main>
+    </PostsProvider>
   );
 }

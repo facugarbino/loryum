@@ -8,6 +8,7 @@ import { MaybeLink } from "../MaybeLink";
 import Link from "next/link";
 import { useUser } from "@/context/user-context";
 import { useMemo } from "react";
+import ClientFormattedDate from "../utils/client-formatted-date";
 
 export default function PostComponent({
   post,
@@ -39,7 +40,11 @@ export default function PostComponent({
         <div>
           <div className="flex items-center gap-4">
             <p className="text-base">{post.user.name}</p>
-            <p className="text-sm text-foreground/50">{post.date}</p>
+            <ClientFormattedDate
+              className="text-sm text-foreground/50"
+              date={post.date}
+              relative={!fullPage}
+            />
           </div>
           <p className="text-sm text-foreground/50">{post.user.username}</p>
         </div>

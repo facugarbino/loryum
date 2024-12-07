@@ -8,6 +8,7 @@ import { ImageUploader } from "./image-uploader";
 import { submitPost } from "@/actions/posts";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/context/user-context";
+import { usePosts } from "@/context/posts-context";
 
 const IMAGES_LIMIT = 4;
 const TEXT_LIMIT = 500;
@@ -26,6 +27,7 @@ export default function PostCreator({
   const [loading, setLoading] = useState<boolean>(false);
   const { toast } = useToast();
   const user = useUser();
+  const { posts, setPosts } = usePosts();
 
   const handleNewFiles = (files: File[]) => {
     files = files.slice(0, IMAGES_LIMIT - images.length);
@@ -51,7 +53,7 @@ export default function PostCreator({
 
     setLoading(true);
     try {
-      await submitPost(value.trim(), images, postId);
+      const newPost = await submitPost(value.trim(), images, postId);
       toast({
         title: `${entity} published`,
       });
@@ -59,6 +61,9 @@ export default function PostCreator({
       setImages([]);
       if (postId) {
         setCollapsed(true);
+      }
+      if (newPost) {
+        setPosts([newPost, ...posts]);
       }
     } catch (e) {
       toast({
