@@ -5,7 +5,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { ApiPage } from "@/models/api-page";
 import PostComponent from "./post-component";
 import { Spinner } from "../ui/spinner";
-import Link from "next/link";
 import { getComments, getPosts, getPostsByUser } from "@/actions/posts";
 
 export default function PostList({

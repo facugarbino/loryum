@@ -16,5 +16,27 @@ export function encodedRedirect(
 }
 
 export function calculateRelativeTime(isoDate: string): string {
-  return "2d";
+  const timestamp = new Date(isoDate).getTime();
+  const now = Date.now();
+  let difference = Math.floor((now - timestamp) / 1000);
+
+  const formatter = new Intl.RelativeTimeFormat(`en`, { style: `narrow` });
+
+  const units: { unit: Intl.RelativeTimeFormatUnit; limit: number }[] = [
+    { unit: "second", limit: 60 },
+    { unit: "minute", limit: 60 },
+    { unit: "hour", limit: 24 },
+    { unit: "day", limit: 30 },
+    { unit: "month", limit: 12 },
+    { unit: "year", limit: 60 },
+  ];
+
+  for (let i = 0; i < units.length; i++) {
+    if (difference < units[i].limit || i === units.length - 1) {
+      return formatter.format(-difference, units[i].unit);
+    }
+    difference = Math.floor(difference / units[i].limit);
+  }
+
+  return "";
 }
