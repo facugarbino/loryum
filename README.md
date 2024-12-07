@@ -3,6 +3,7 @@
 ## Demo
 
 You can try out Loryum here: [https://loryum.garbino.com.ar](https://loryum.garbino.com.ar)
+The app is deployed to Vercel, which is optimized for Next.js and TypeScript for efficient server-side rendering, fast performance, and scalability.
 
 <img width="1153" alt="image" src="https://github.com/user-attachments/assets/5083dbbf-5232-40f7-9bea-d3dd43e38b26">
 
