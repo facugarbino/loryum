@@ -117,13 +117,13 @@ export default function PostCreator({
         <Label className="text-xs" htmlFor="post-input">
           {value.length} / {TEXT_LIMIT} characters
         </Label>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-4 flex-wrap">
             <ImageUploader
               onFilesUploaded={handleNewFiles}
               disabled={images.length >= 4}
             />
-            <div className="flex items-center gap-2">
+            <div className="flex items-start gap-2 pr-4">
               {images.map((i) => (
                 <div
                   key={i.name}
