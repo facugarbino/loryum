@@ -31,13 +31,13 @@ export default function PostComponent({
   }, [post.user.id]);
 
   return (
-    <div className="flex flex-col gap-6 border p-5">
+    <div className="flex flex-col gap-6 border p-5" data-cy="post-container">
       <Link href={profileUrl} className="flex items-center space-x-4 max-w-fit">
         <Avatar className="h-10 w-10">
           <AvatarImage src={post.user.avatarUrl} />
           <AvatarFallback>{post.user.name[0]}</AvatarFallback>
         </Avatar>
-        <div>
+        <div data-cy="post-creator">
           <div className="flex items-center gap-4">
             <p className="text-base">{post.user.name}</p>
             <ClientFormattedDate
@@ -49,8 +49,7 @@ export default function PostComponent({
           <p className="text-sm text-foreground/50">{post.user.username}</p>
         </div>
       </Link>
-
-      {post.content}
+      <p data-cy="post-content">{post.content}</p>
       <PostImages images={post.images.map((i) => i.url)} fullPage={fullPage} />
       {showComments && (
         <MaybeLink
