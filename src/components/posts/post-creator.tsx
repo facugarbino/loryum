@@ -2,7 +2,7 @@
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
-import { Loader2, Trash } from "lucide-react";
+import { Loader2, MessageCircle, MessageSquare, Trash } from "lucide-react";
 import { useState } from "react";
 import { ImageUploader } from "./image-uploader";
 import { submitPost } from "@/actions/posts";
@@ -20,6 +20,7 @@ export default function PostCreator({
   placeholder: string;
   postId?: string;
 }) {
+  const [collapsed, setCollapsed] = useState<boolean>(!!postId);
   const [value, setValue] = useState<string>("");
   const [images, setImages] = useState<File[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -56,6 +57,9 @@ export default function PostCreator({
       });
       setValue("");
       setImages([]);
+      if (postId) {
+        setCollapsed(true);
+      }
     } catch (e) {
       toast({
         title: "Error",
@@ -66,6 +70,28 @@ export default function PostCreator({
       setLoading(false);
     }
   };
+
+  const handleExpand = () => {
+    if (user) {
+      setCollapsed(false);
+    } else {
+      toast({
+        title: "You must sign in to post.",
+      });
+    }
+  };
+
+  if (collapsed) {
+    return (
+      <div
+        className="flex justify-items-start cursor-pointer max-w-3xl w-full gap-2"
+        onClick={handleExpand}
+      >
+        <MessageSquare />
+        {placeholder}
+      </div>
+    );
+  }
 
   if (!user) {
     if (postId) {

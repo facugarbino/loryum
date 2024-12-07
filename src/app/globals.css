@@ -67,3 +67,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.infinite-scroll-component__outerdiv {
+  width: 100%;
+}

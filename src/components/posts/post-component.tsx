@@ -1,6 +1,4 @@
 "use client";
-import * as React from "react";
-
 import { Post } from "@/models/post";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { MessageSquare } from "lucide-react";
@@ -8,6 +6,8 @@ import PostImages from "./post-images";
 import { calculateRelativeTime } from "@/utils/utils";
 import { MaybeLink } from "../MaybeLink";
 import Link from "next/link";
+import { useUser } from "@/context/user-context";
+import { useMemo } from "react";
 
 export default function PostComponent({
   post,
@@ -20,12 +20,18 @@ export default function PostComponent({
   showComments?: boolean;
   redirectToPost?: boolean;
 }) {
+  const user = useUser();
+
+  const profileUrl = useMemo(() => {
+    if (post.user.id === user?.id) {
+      return "/profile";
+    }
+    return `/profile/${post.user.id}`;
+  }, [post.user.id]);
+
   return (
     <div className="flex flex-col gap-6 border p-5">
-      <Link
-        href={`/profile/${post.user.id}`}
-        className="flex items-center space-x-4 max-w-fit"
-      >
+      <Link href={profileUrl} className="flex items-center space-x-4 max-w-fit">
         <Avatar className="h-10 w-10">
           <AvatarImage src={post.user.avatarUrl} />
           <AvatarFallback>{post.user.name[0]}</AvatarFallback>

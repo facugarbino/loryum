@@ -36,9 +36,9 @@ export default async function RootLayout({
         >
           <UserProvider user={user}>
             <main className="min-h-screen flex flex-col items-center">
-              <div className="flex-1 w-full flex flex-col gap-20 items-center">
+              <div className="flex-1 w-full flex flex-col gap-10 items-center">
                 <Header />
-                <div className="flex flex-col gap-20 max-w-5xl w-full">
+                <div className="flex flex-col max-w-5xl w-full">
                   {children}
                   <Toaster />
                 </div>

@@ -75,7 +75,7 @@ export default function PostList({
             <PostComponent
               key={post.id}
               post={post}
-              showComments
+              showComments={!postId}
               redirectToPost={!postId}
             />
           ))}
