@@ -166,7 +166,7 @@ export const submitPost = async (
     .insert({
       user_id: user?.id,
       content: content,
-      postId: postId || null,
+      post_id: postId || null,
     })
     .select()
     .single();
