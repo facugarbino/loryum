@@ -102,7 +102,7 @@ export default function PostCreator({
     if (postId) {
       return;
     }
-    return <p>Log in to post</p>;
+    return <p>Sign in to post</p>;
   }
 
   return (
