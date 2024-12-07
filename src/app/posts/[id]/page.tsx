@@ -23,7 +23,7 @@ export default async function PostView({
     <Spinner />
   ) : (
     <main className="space-y-4">
-      <Link className="flex gap-2" href={"/"}>
+      <Link className="flex gap-2 px-4" href={"/"}>
         <ArrowLeft /> Back
       </Link>
       <PostComponent post={post} fullPage={true} />

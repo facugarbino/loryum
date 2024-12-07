@@ -5,6 +5,7 @@ import { Post } from "@/models/post";
 import { createClient } from "@/utils/supabase/server";
 import { getLoggedUser } from "./user";
 import { randomUUID } from "crypto";
+import { calculateRelativeTime } from "@/utils/utils";
 
 const PAGE_SIZE = 5;
 
@@ -100,6 +101,7 @@ const getPostsFromSupabase = async (
       ...p,
       //@ts-ignore
       comments: p.comments[0].count,
+      date: calculateRelativeTime(p.date),
     })),
     until: until,
   };

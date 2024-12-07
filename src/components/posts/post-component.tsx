@@ -39,9 +39,7 @@ export default function PostComponent({
         <div>
           <div className="flex items-center gap-4">
             <p className="text-base">{post.user.name}</p>
-            <p className="text-sm text-foreground/50">
-              {calculateRelativeTime(post.date)}
-            </p>
+            <p className="text-sm text-foreground/50">{post.date}</p>
           </div>
           <p className="text-sm text-foreground/50">{post.user.username}</p>
         </div>
