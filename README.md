@@ -81,10 +81,9 @@ Follow these steps to set up and run Loryum on your local machine:
 2. **Initialize Supabase**:
    Run the following commands to set up the Supabase environment:
    ```bash
-   supabase init
    supabase start
    ```
-   This will configure the local Supabase instance and run necessary database migrations.
+   This will configure the local Supabase instance and run the migrations automatically from the `supabase/migrations` folder.
 
 3. **Environment Variables**:
    - Copy the provided `.env.example` file to `.env.local`:
