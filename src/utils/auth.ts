@@ -16,5 +16,4 @@ export const signInWithGithub = async () => {
 
 export const signOut = async () => {
   await supabase.auth.signOut();
-  redirect("/");
 };

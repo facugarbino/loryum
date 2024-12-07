@@ -2,11 +2,12 @@
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
-import { Trash } from "lucide-react";
+import { Loader2, Trash } from "lucide-react";
 import { useState } from "react";
 import { ImageUploader } from "./image-uploader";
 import { submitPost } from "@/actions/posts";
 import { useToast } from "@/hooks/use-toast";
+import { useUser } from "@/context/user-context";
 
 const IMAGES_LIMIT = 4;
 const TEXT_LIMIT = 500;
@@ -21,7 +22,9 @@ export default function PostCreator({
 }) {
   const [value, setValue] = useState<string>("");
   const [images, setImages] = useState<File[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const { toast } = useToast();
+  const user = useUser();
 
   const handleNewFiles = (files: File[]) => {
     files = files.slice(0, IMAGES_LIMIT - images.length);
@@ -43,13 +46,33 @@ export default function PostCreator({
       return;
     }
 
-    await submitPost(value.trim(), images, postId);
-    toast({
-      title: "Post published",
-    });
-    setValue("");
-    setImages([]);
+    const entity = postId ? "Comment" : "Post";
+
+    setLoading(true);
+    try {
+      await submitPost(value.trim(), images, postId);
+      toast({
+        title: `${entity} published`,
+      });
+      setValue("");
+      setImages([]);
+    } catch (e) {
+      toast({
+        title: "Error",
+        description: `Your ${entity.toLowerCase()} could not be published`,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (!user) {
+    if (postId) {
+      return;
+    }
+    return <p>Log in to post</p>;
+  }
 
   return (
     <div className="w-full max-w-3xl m-auto p-4 border">
@@ -87,7 +110,8 @@ export default function PostCreator({
               ))}
             </div>
           </div>
-          <Button disabled={!value.trim()} onClick={handlePost}>
+          <Button disabled={!value.trim() || loading} onClick={handlePost}>
+            {loading && <Loader2 className="animate-spin" />}
             Post
           </Button>
         </div>
