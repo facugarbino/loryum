@@ -1,10 +1,10 @@
 # Loryum
-<img width="1153" alt="image" src="https://github.com/user-attachments/assets/5083dbbf-5232-40f7-9bea-d3dd43e38b26">
-
 
 ## Demo
 
 You can try out Loryum here: [https://loryum.garbino.com.ar](https://loryum.garbino.com.ar)
+
+<img width="1153" alt="image" src="https://github.com/user-attachments/assets/5083dbbf-5232-40f7-9bea-d3dd43e38b26">
 
 ## Overview
 
