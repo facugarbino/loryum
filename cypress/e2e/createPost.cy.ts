@@ -17,7 +17,7 @@ describe("Create Post Workflow", () => {
     cy.get("button").contains("Post").click();
 
     // Verify the post appears in the DOM
-    const post = cy.get('[data-cy="post"]').contains(postContent);
+    const post = cy.get('[data-cy="post-container"]').contains(postContent);
     post.get('[data-cy="post-content"]').should("contain.text", postContent);
     post
       .get('[data-cy="post-creator"]')
