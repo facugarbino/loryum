@@ -1,96 +1,158 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# Loryum
+<img width="1153" alt="image" src="https://github.com/user-attachments/assets/5083dbbf-5232-40f7-9bea-d3dd43e38b26">
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
-
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
-
-## Features
-
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
 
 ## Demo
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+You can try out Loryum here: [https://loryum.garbino.com.ar](https://loryum.garbino.com.ar)
 
-## Deploy to Vercel
+## Overview
 
-Vercel deployment will guide you through creating a Supabase account and project.
+Loryum is a modern social application for posting text and images, with features including GitHub OAuth-based authentication and the ability to comment on other users' posts. The app provides a seamless experience for content creation and interaction, utilizing cutting-edge technologies for its frontend and backend.
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+## Features
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+Loryum offers a range of features to provide a seamless and engaging experience for its users:
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+1. **Authentication**:
+   - Log in using **GitHub OAuth**, with your GitHub name, username, and avatar automatically used for your profile in the app.
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+2. **Index Page**:
+   - View all user posts on the index page without needing to log in.
+   - Click on a user’s profile to see only their posts on a dedicated profile page.
+   - Access the comments section by pressing the icon below each post.
 
-## Clone and run locally
+3. **Posting and Commenting**:
+   - Logged-in users can create new posts and comment on other users' posts.
+   - Each post supports up to **4 images**, with a maximum size of **1 MB per image**.
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+4. **Responsive Design**:
+   - The app is fully responsive and optimized for use on both PCs and mobile devices.
 
-2. Create a Next.js app using the Supabase Starter template npx command
+5. **Theme Switching**:
+   - Easily toggle between **dark theme** and **light theme** for a personalized viewing experience.
 
+## Architecture
+
+The application leverages a **server-side rendering (SSR)** architecture with components designed to interact directly with the backend and database. Key aspects of the architecture include:
+
+- **Frontend**: Built with **Next.js** and TypeScript, ensuring a fast and efficient user experience with server-rendered and dynamic client-side components.
+- **Backend**: Manages communication with the database using **Supabase**, a robust backend-as-a-service platform powered by PostgreSQL.
+- **Database**: Supabase acts as both the database and authentication service, simplifying backend operations while ensuring strong security practices.
+  - Supabase also integrates GitHub OAuth out-of-the-box for a streamlined authentication flow.
+
+## Approach and Methodology
+
+1. **Development Process**:
+   - The project was developed solo, following an incremental approach with small, meaningful Git commits to ensure progress was manageable and traceable.
+   - Development started with implementing the GitHub OAuth process, followed by building the UI with mocked data to refine user interactions before connecting it to the backend.
+
+2. **User Experience**:
+   - Prioritized a seamless and intuitive user interface to provide a pleasant experience, ensuring ease of navigation and efficient workflows.
+   - Implemented real-time feedback using **toasts** to inform users of successful actions (e.g., post creation) or errors, enhancing interactivity and clarity.
+
+3. **Performance Optimization**:
+   - Leveraged **server-side rendering (SSR)** to improve performance and user experience.
+   - Fetched the first page of posts on the backend during the initial load, eliminating the need for loading spinners and ensuring that users see content immediately upon visiting the page.
+
+4. **Data Integration**:
+   - Focused on connecting the frontend to the Supabase backend after finalizing the UI. This ensured smoother transitions between mocked and live data without disrupting the core design.
+
+5. **Testing and Validation**:
+   - End-to-end testing was conducted using Cypress, validating critical user flows such as authentication, post creation, and data accuracy.
+   - Testing ensured stability and consistency, especially in scenarios involving real-time interactions with the backend.
+
+## Running the Application Locally
+
+Follow these steps to set up and run Loryum on your local machine:
+
+### Prerequisites
+1. Install [Node.js](https://nodejs.org/).
+2. Install the Supabase CLI by following [Supabase CLI Installation Guide](https://supabase.com/docs/guides/cli).
+
+### Setup
+
+1. **Clone the Repository**:
    ```bash
-   npx create-next-app -e with-supabase
+   git clone git@github.com:facugarbino/loryum.git
+   cd loryum
    ```
 
-3. Use `cd` to change into the app's directory
-
+2. **Initialize Supabase**:
+   Run the following commands to set up the Supabase environment:
    ```bash
-   cd name-of-new-app
+   supabase init
+   supabase start
+   ```
+   This will configure the local Supabase instance and run necessary database migrations.
+
+3. **Environment Variables**:
+   - Copy the provided `.env.example` file to `.env.local`:
+     ```bash
+     cp .env.example .env.local
+     ```
+   - Replace placeholder values in `.env.local` with your own settings.
+   - Create a GitHub OAuth application [here](https://github.com/settings/developers) and add the client ID and secret to the `.env.local` file.
+
+4. **Install Dependencies**:
+   ```bash
+   npm install
    ```
 
-4. Rename `.env.example` to `.env.local` and update the following:
-
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
-
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
-
-5. You can now run the Next.js local development server:
-
+5. **Run the Application**:
+   Start the development server:
    ```bash
    npm run dev
    ```
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+6. **Access the Application**:
+   Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+## Tests
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+### Running Tests
+Loryum uses Cypress for end-to-end (E2E) testing. These tests ensure the application behaves as expected in real-world user scenarios. To run the Cypress tests:
 
-## Feedback and issues
+1. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+2. Prepare the Cypress environment:
+   - Copy the `cypress.env.json.example` file to a new file named `cypress.env.json`:
+     ```bash
+     cp cypress.env.json.example cypress.env.json
+     ```
+   - Add your GitHub credentials (GitHub username and password) to the `cypress.env.json` file.
 
-## More Supabase examples
+3. Open the Cypress test runner:
+   ```bash
+   npx cypress open
+   ```
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+4. Select the desired test in the Cypress UI to run it.
+
+Alternatively, run all tests in headless mode:
+```bash
+npx cypress run
+```
+
+### Test Coverage
+The test suite currently includes:
+
+- End-to-end tests for the GitHub OAuth login process.
+- Post creation flow, ensuring:
+  - Posts are successfully created.
+  - Posts appear in the feed with the correct content, and user information.
+  
+
+## Security
+
+Loryum ensures secure user interactions with **Supabase Auth**, which provides:
+
+- Secure GitHub OAuth for user authentication.
+- Role-based access control and row-level security for database operations.
+
+## License
+
+Loryum is licensed under the [MIT License](LICENSE.txt).
